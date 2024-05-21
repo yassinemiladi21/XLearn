@@ -1,0 +1,109 @@
+{{ form_start(form) }}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+
+<div class="row pt-4" >
+
+
+<div class="col-md">
+
+        <div class="d-flex justify-content-between mb-4"><h4 style="color:grey; font-weight:bold">Informations Générales </h4><button class="btn btn-primary col-md-4">{{ button_label|default('Créer') }}</button></div>
+
+                <div class="form-group col-md mb-3">
+                {{ form_label(form.title, 'Titre de la formation') }}
+                {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+                </div>
+  
+
+            <div class="form-group mb-3">
+                {{ form_label(form.description, 'Description') }}
+                {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+            </div>
+
+<div class="row mb-3">
+            <div class="form-group col-md-4">
+                {{ form_label(form.category, 'Catégorie') }}
+                {{ form_widget(form.category, {'attr': {'class': 'form-select'}}) }}
+            </div>
+
+            <div class="form-group col-md-4">
+                {{ form_label(form.level, 'Niveau') }}
+                {{ form_widget(form.level, {'attr': {'class': 'form-select'}}) }}
+            </div>
+            </div>
+
+    
+            <div class="mb-3">
+
+            {{ form_label(form.thumbnail, 'Thumbnail') }}
+                {{ form_widget(form.thumbnail, {'attr': {'class': 'form-control'}}) }}
+            </div>
+
+        </div>
+
+<div class="col-md">
+
+                <h4 class="mb-4" style="color:grey; font-weight:bold">Ressources</h4>
+
+            <!-- Add a container for the file input fields -->
+            <div id="file-inputs-container">
+                <!-- Add an initial file input field -->
+                <div class="file-input mb-3">
+                    <h5 class="mb-3" style="color:#ffb703">Section 1</h5>
+                    <div style="margin-left:2rem;">Vidéo 1<input class="form-control mb-3" type="file" name="file[]" accept=".mp4,.avi,.mov"></div>
+                    <div style="margin-left:2rem;">Document 1<input class="form-control mb-3" type="file" name="docs[]" accept=".pdf,.doc,.docx"></div>
+                    {# <button type="button" class="remove-file-input">Remove</button> #}
+                </div>
+
+            </div>
+
+            <button class="btn btn-secondary mb-3" type="button" id="add-file-input">Ajouter section</button>  
+    </div>
+    </div>
+            
+
+    <script>
+    
+
+    // Handle adding file input fields
+    var i = 1;
+    $('#add-file-input').click(function() {
+        i=i+1;
+        var $fileInput = $(`<div class="file-input mb-3"><h5 class="mb-3" style="color:#ffb703">Section ${i} </h5><div style="margin-left:2rem;">Vidéo ${i}<input class="form-control mb-3" type="file" name="file[]" accept=".mp4,.avi,.mov"></div><div style="margin-left:2rem;">Document ${i}<input class="form-control mb-3" type="file" name="docs[]" accept=".pdf,.doc,.docx"></div><button type="button" class="btn btn-danger remove-file-input align-self-end">Supprimer</button></div>`);
+        $('#file-inputs-container').append($fileInput);
+        
+    });
+
+    // Handle removing file input fields
+    $(document).on('click', '.remove-file-input', function() {
+        
+        const container = $(`#file-inputs-container`);
+        const element = $(this).closest('.file-input');
+        
+        const all = element.nextAll('.file-input')
+
+        const index = container.children('.file-input').index(element);
+
+        for (var j=index+1; j< i;j++) {
+            // let element = elements[j];
+            let el = all[j-index-1];
+            el.firstChild.innerHTML = `Section ${j}`;
+            // el.text(`Section ${j}`);     
+        } 
+
+        i=j-1;
+        // $(`#file-inputs-container .file-input p`).text(`Section ${i}`);
+
+     $(this).closest('.file-input').remove();
+
+    });
+
+    // Handle form submission
+    $('button').submit(function(e) {
+        e.preventDefault(); // Prevent the form from submitting normally        
+    });
+
+    </script>
+
+{{ form_end(form) }}

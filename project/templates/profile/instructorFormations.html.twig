@@ -1,0 +1,123 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+<style>
+.course-header {
+        padding:0;
+        max-width: 4rem;
+        height: 2.5rem;
+        overflow: hidden;
+        display: flex;
+        border-radius: 0.85rem;
+        background-color: white;
+
+  }
+
+  .course-header img {
+          max-width: inherit;
+          max-height: inherit;
+          height: inherit;
+          width: inherit;
+          object-fit: cover;
+          
+
+  }
+
+</style>
+
+<div class="d-flex align-items-center justify-content-between mb-2">
+<h1 class="mb-4" style="color: #ffb703; font-weight: bold; font-size:3rem;">Mes formations</h1>
+</div>
+
+<div class="row mb-4 align-items-end">
+
+<div class="form-group col-md-3">
+    <input type="text" id="searchInput" class="form-control" placeholder="Recherche...">
+</div>
+
+
+<div class="form-group col-md-2">
+  <label for="roleFilter">Catégorie</label>
+  <select id="roleFilter" class="form-control">
+    <option value="">Tous</option>
+    <option value="instructeur">Instructeur</option>
+    <option value="apprenant">Apprenant</option>
+  </select>
+
+</div>
+
+<div class="form-group col-md-2">
+  <label for="roleFilter">Etat</label>
+  <select id="roleFilter" class="form-control">
+    <option value="">Tous</option>
+    <option value="instructeur">Instructeur</option>
+    <option value="apprenant">Apprenant</option>
+  </select>
+
+</div>
+
+<a class="btn btn-primary ml-3 col-md-3" href="{{ path('app_formation_new') }}">Créer nouvelle formation</a>
+
+
+</div>
+        <table class="table table-hover table-striped shadow-sm">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Titre</th>
+                <th>Description</th>
+                <th>Catégorie</th>
+                <th></th>
+                <th></th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+        
+        {% for formation in formationsInstructor %}
+            
+            <tr>
+                <td><div class="course-header">
+              <img style=""
+              src="{{asset('formation/')}}{{ formation.thumbnail}}"
+              alt="Course Thumbnail"
+            />
+
+            {# <img
+              class="instructorImg img-responsive"
+              src="https://avatars.githubusercontent.com/u/51037193?v=4"
+              alt=""
+              srcset=""
+            /> #}
+          </div></td>
+                <td>{{ formation.title }}</td>
+                <td>{{ formation.description }}</td>
+                <td>{{formation.category}}</td>
+                <td>
+                {% if formation.validated == 0 %}
+                    <span class='badge bg-secondary rounded-pill'>En attente</span>
+                {% elseif formation.validated == 1 %}
+                    <span class='badge bg-success rounded-pill'>Validée</span>
+                {% else %}
+                    <span class='badge bg-danger rounded-pill'>Refusée</span>
+                {% endif %}
+              </td>
+
+            <td><a class="btn btn-info btn-sm rounded-pill" href="{{ path('app_formation_show', {'id': formation.id}) }}">Consulter</a></td>
+
+
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+                  {% endfor %}
+
+        </tbody>
+    </table>
+      </div>
+
+      {% endblock %}

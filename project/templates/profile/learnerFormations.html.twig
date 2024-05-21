@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+<style>
+.course-header {
+        padding:0;
+        max-width: 4rem;
+        height: 2.5rem;
+        overflow: hidden;
+        display: flex;
+        border-radius: 0.85rem;
+        background-color: white;
+
+  }
+
+  .course-header img {
+          max-width: inherit;
+          max-height: inherit;
+          height: inherit;
+          width: inherit;
+          object-fit: cover;
+          
+
+  }
+</style>
+
+<h1 class="mb-4" style="color: #ffb703; font-weight: bold; font-size:3rem;">Mes formations</h1>
+
+        <table class="table table-hover table-striped shadow-sm">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Titre</th>
+                <th>Description</th>
+                <th>Catégorie</th>
+                <th></th>
+                <th></th>
+
+            </tr>
+        </thead>
+        <tbody>
+        {% for insc in inscriptions %}
+            
+            <tr>
+                <td><div class="course-header">
+        <img style=""
+              src="{{asset('formation/')}}{{ insc.formation.thumbnail}}"
+              alt="Course Thumbnail"
+            />
+
+            {# <img
+              class="instructorImg img-responsive"
+              src="https://avatars.githubusercontent.com/u/51037193?v=4"
+              alt=""
+              srcset=""
+            /> #}
+          </div></td>
+                <td>{{ insc.formation.title }}</td>
+                <td>{{ insc.formation.description }}</td>
+                <td>{{insc.formation.category}}</td>
+                <td>{{insc.validated ? "<span class='badge bg-success rounded-pill'>Acceptée</span>" : "<span class='badge bg-secondary rounded-pill'>En attente</span>"}}</td>
+                <td><a class="btn btn-info btn-sm rounded-pill" href="{{ path('app_inscription_new', {'id': insc.formation.id}) }}">Consulter</a></td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">Pas de formations</td>
+            </tr>
+                  {% endfor %}
+
+        </tbody>
+    </table>
+      </div>
+
+      {% endblock %}

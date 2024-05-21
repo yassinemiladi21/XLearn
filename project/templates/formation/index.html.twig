@@ -1,0 +1,251 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formations{% endblock %}
+
+{% block body %}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+
+<style>
+
+    <style>
+
+  .slider {
+    width: 80%;
+    margin: auto;
+  }
+
+  .course {
+    
+    border: 2px solid #141c26;
+    border-radius: 1rem;
+    max-width: 17rem;
+    margin: 2rem;
+  }
+
+  .course p {
+  
+  }
+
+  .course-header {
+        padding:0;
+        max-width: inherit;
+        height: 11rem;
+        overflow: hidden;
+        display: flex;
+        border-top-left-radius: 0.85rem;
+          border-top-right-radius: 0.85rem;
+          background-color: white;
+
+  }
+
+  .course-header img {
+          max-width: inherit;
+          max-height: inherit;
+          height: inherit;
+          width: inherit;
+          object-fit: cover;
+          
+
+  }
+
+  .course-body {
+        background-color: #023047;
+         opacity: 0.9;
+        border-bottom-right-radius: 0.85rem;
+        border-bottom-left-radius: 0.85rem;
+
+  }
+
+  .course-body span {
+    color: #ffb703;
+  }
+
+  .course-title {
+    height: 3.5rem;
+    /* overflow: hidden;
+    white-space: nowrap; 
+    text-overflow: ellipsis;  */
+  }
+
+    </style>
+
+</style>
+
+{% include "main/navbar.html.twig" %}
+
+<div style="padding: 5rem">
+
+    <h1 style="margin-bottom:2rem; color: #023047; font-weight: bold;  font-size:3rem;">Formations</h1>
+
+<div class="row mb-5 align-items-end">
+
+<div class="form-group col-md-3">
+    <input type="text" id="searchInput" class="form-control" placeholder="Recherche...">
+</div>
+
+
+<div class="form-group col-md-2">
+  <label for="categoryFilter">Catégorie</label>
+  <select id="categoryFilter" class="form-control">
+  <option value="">Tous</option>
+  {% for category in categories %}
+    <option value="{{category}}">{{category |capitalize}}</option>
+    {% endfor %}
+  </select>
+
+</div>
+
+
+<div class="form-group col-md-2">
+<label for="levelFilter">Niveau</label>
+  <select id="levelFilter" class="form-control">
+    <option value="">Tous</option>
+    <option value="débutant">Débutant</option>
+    <option value="intermediare">Itermédiare</option>
+    <option value="avancé">Avancé</option>
+  </select>
+</div>
+
+</div>
+
+
+    <div class="slider d-flex flex-wrap">
+
+    {% for formation in formations %}
+          {% if formation.validated == 1 %}
+          
+    <a class="course d-flex flex-column text-white" style="text-decoration:none" href="{{ path('app_formation_show', {'id': formation.id}) }}">
+
+        <div class="course-header position-relative">
+        <img style=""
+              src="{{asset('formation/')}}{{ formation.thumbnail}}"
+              alt="Course Thumbnail"
+            />
+
+            {# <img
+              class="instructorImg img-responsive"
+              src="https://avatars.githubusercontent.com/u/51037193?v=4"
+              alt=""
+              srcset=""
+            /> #}
+            <span class="position-absolute top-0 start-0 p-2 badge bg-warning text-dark d-flex align-items-center">
+              <span class="material-symbols-outlined">signal_cellular_alt</span>{{formation.level}}
+            </span>
+          </div>
+
+          
+
+        <div class="course-body d-flex flex-column align-items-center">
+          <div class="course-title d-flex justify-content-center align-items-center"><h6 style="text-align:center;margin:0"><strong>{{formation.title}}</strong></h6></div>
+          <hr style="margin:0; width:90%">
+
+          
+          <div style="width:100%; padding:1rem;">
+
+          <div class="d-flex align-items-center justify-content-center">
+          {% if formation.instructor.image is not null %}
+                        <img  src="{{asset('profile/')}}{{ formation.instructor.image}}" alt="" class="rounded-circle me-2" width="32" height="32">
+
+                    {% else %}
+                                <img  src="https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg" alt="" class="rounded-circle me-2" width="32" height="32">
+
+                    {% endif %}
+                    {{formation.instructor.fullName}}
+          </div>
+
+           <div class="mt-3 d-flex align-items-center justify-content-around">         
+            <div class="d-flex align-items-center"><span class="material-symbols-outlined">dataset</span> {{formation.videos |length}} Vidéos</div>
+             <div class="d-flex align-items-center"><span class="material-symbols-outlined">category</span>{{formation.category |capitalize}}</div>
+            </div>
+
+          </div>
+
+
+          </div>
+      </a>
+      {% endif %}
+    {% endfor %}
+     
+
+     
+    </div>
+    
+  </div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
+    <script>
+
+    var searchInput = document.getElementById('searchInput');
+    var categoryFilter = document.getElementById('categoryFilter');
+    var activationFilter = document.getElementById('levelFilter');
+    var levels = $(".course .course-body .level").text();
+
+    console.log(levels);
+
+
+
+// Add event listeners to the filter elements
+searchInput.addEventListener('keyup', applyFilters);
+categoryFilter.addEventListener('change', applyFilters);
+activationFilter.addEventListener('change', applyFilters);
+
+// Function to apply all filters
+function applyFilters() {
+  var searchFilter = searchInput.value.toLowerCase();
+  var category = categoryFilter.value;
+  var level = levelFilter.value;
+  var rows = dataTable.getElementsByTagName('tr');
+
+  // Loop through all table rows, hide non-matching rows
+  for (var i = 1; i < rows.length; i++) {
+    var cells = rows[i].getElementsByTagName('td');
+    var visible = true;
+
+    // Apply search filter
+    if (searchFilter !== '') {
+      var matchesSearch = false;
+      for (var j = 0; j < cells.length; j++) {
+        var cellData = cells[j].innerText.toLowerCase();
+        if (cellData.indexOf(searchFilter) > -1) {
+          matchesSearch = true;
+          break;
+        }
+      }
+      visible = visible && matchesSearch;
+    }
+
+    // Apply role filter
+    if (role !== '') {
+      var roleCell = cells[7].innerText.toLowerCase().trim(); // Assuming role is in the second column
+
+
+      visible = visible && (roleCell === role);
+    }
+
+    //Apply activation status filter
+    if (activationStatus !== '') {
+      var activationCell = cells[8].innerText.toLowerCase().trim(); // Assuming activation status is in the third column
+      console.log(activationCell);
+            console.log(activationStatus);
+
+      visible = visible && (activationCell === activationStatus);
+ 
+    }
+
+    // Show/hide row based on visibility flag
+    rows[i].style.display = visible ? '' : 'none';
+  }
+}
+    
+    </script>
+
+{% endblock %}

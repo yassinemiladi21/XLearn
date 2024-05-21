@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+
+{% block body %}
+  <style>
+        body {
+        background-color: tan;
+        }
+        </style>
+        
+   {{ include('main/navbar.html.twig') }}
+
+
+   {{ include('main/main.html.twig') }}
+     {{ include('main/categories.html.twig') }}
+      {{ include('main/courses.html.twig') }}
+     {{ include('main/testimonials.html.twig') }}
+    {{ include('main/faq.html.twig') }}
+
+    {{ include('main/footer.html.twig') }}
+
+{% endblock %}
+

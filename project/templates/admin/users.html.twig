@@ -1,0 +1,195 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Utilisateurs{% endblock %}
+
+{% block body %}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+{% include "admin/navbar.html.twig" %}
+
+<div style="padding: 3rem">
+
+    <h1 style="margin-bottom:2rem; color: #023047; font-weight: bold;  font-size:3rem;">Gestion Utilisateurs</h1>
+
+
+<div class="row mb-4 align-items-end">
+
+<div class="form-group col-md-3">
+    <input type="text" id="searchInput" class="form-control" placeholder="Recherche...">
+</div>
+
+
+<div class="form-group col-md-2">
+  <label for="roleFilter">Role</label>
+  <select id="roleFilter" class="form-control">
+    <option value="">Tous</option>
+    <option value="instructeur">Instructeur</option>
+    <option value="apprenant">Apprenant</option>
+  </select>
+
+</div>
+
+</div>
+
+
+    <table class="table pt-2" id="dataTable">
+            <tr style="background-color: #023047; color:white">
+                <th>Id</th>
+                <th></th>
+                <th>Prénom</th>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Téléphone</th>
+                <th>Profession</th>                
+                <th>Rôle</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+
+        {% if user.id != 11 %}
+
+
+
+              <div class="modal fade" id="example{{user.id}}Modal" tabindex="-1" aria-labelledby="example{{user.id}}ModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="example{{user.id}}ModalLabel" style="color:black">Supprimer utilisateur</h1>
+                    
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Etes-vous sure de supprimer l'utilisateur <strong>
+                        {{user.name}} {{user.lastName}}</strong> ?</p>
+                    </div>
+                    <div class="modal-footer">
+
+                    <form method="post" action="{{ path('app_user_delete', {'id': user.id}) }}" >
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                        <button class="btn btn-success">Confirmer</button>
+                    </form>
+
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+        
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>
+                
+                    {% if user.image is not null %}
+                        <img  src="{{asset('profile/')}}{{ user.image}}" alt="" class="rounded-circle me-2" width="32" height="32">
+
+                    {% else %}
+                                <img  src="https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg" alt="" class="rounded-circle me-2" width="32" height="32">
+
+                    {% endif %}
+                </td>
+
+                
+                <td>{{ user.name }}</td>
+                <td>{{ user.lastName }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.phone }}</td>
+                <td>{{ user.profession }}</td>
+                <td>
+                
+                    {% if user.roles[0] == 'ROLE_ADMIN'%}
+                            <span class="badge bg-dark">Admin</span>
+                        {% elseif user.roles[0] == 'ROLE_INSTRUCTOR' %}
+                            <span class="badge bg-secondary">Instructeur</span>
+                        {% elseif user.roles[0] == 'ROLE_LEARNER' %}
+                            <span class="badge bg-info text-dark">Apprenant</span>
+
+                    {% endif %}
+
+                </td>
+               
+                <td>
+                    <a class="btn btn-danger btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#example{{user.id}}Modal">Supprimer</a>
+                </td>
+
+                
+
+
+            </tr>
+        {% endif %}
+            
+
+              
+
+        {% else %}
+            <tr>
+                <td colspan="11">pas d'utilisateurs</td>
+            </tr>
+    {% endfor %}
+        </tbody>
+    </table>
+
+
+    </div>
+
+
+<script>
+
+
+
+// Get the filter elements and table
+var searchInput = document.getElementById('searchInput');
+var roleFilter = document.getElementById('roleFilter');
+var dataTable = document.getElementById('dataTable');
+
+
+
+// Add event listeners to the filter elements
+searchInput.addEventListener('keyup', applyFilters);
+roleFilter.addEventListener('change', applyFilters);
+
+// Function to apply all filters
+function applyFilters() {
+  var searchFilter = searchInput.value.toLowerCase();
+  var role = roleFilter.value;
+  var rows = dataTable.getElementsByTagName('tr');
+
+  // Loop through all table rows, hide non-matching rows
+  for (var i = 1; i < rows.length; i++) {
+    var cells = rows[i].getElementsByTagName('td');
+    var visible = true;
+
+    // Apply search filter
+    if (searchFilter !== '') {
+      var matchesSearch = false;
+      for (var j = 0; j < cells.length; j++) {
+        var cellData = cells[j].innerText.toLowerCase();
+        if (cellData.indexOf(searchFilter) > -1) {
+          matchesSearch = true;
+          break;
+        }
+      }
+      visible = visible && matchesSearch;
+    }
+
+    // Apply role filter
+    if (role !== '') {
+      var roleCell = cells[7].innerText.toLowerCase().trim(); // Assuming role is in the second column
+
+
+      visible = visible && (roleCell === role);
+    }
+
+    // Show/hide row based on visibility flag
+    rows[i].style.display = visible ? '' : 'none';
+  }
+}
+
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,252 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+
+
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+
+
+
+
+    <style>
+
+    .nav-pills .nav-link.active {
+      background-color: #219ebc !important;
+    }
+
+
+        #content {
+            width: 100%;
+            height: 100vh;
+        }
+
+        #content > div {
+            display: none;
+            width: 100%;
+            padding: 5rem;
+        }
+        /* Show the selected content element */
+        #content > div.active {
+            display: block;
+        }
+
+      
+
+        .img-container {
+         
+          padding:0;
+        max-width: 13rem;
+        height: 13rem;
+        overflow: hidden;
+        display: flex;
+          background-color: white;
+          border-radius: 50%;
+          transition: all .3s ease;
+        }
+
+        .img-container img {
+          max-width: inherit;
+          max-height: inherit;
+          height: inherit;
+          width: inherit;
+          object-fit: cover;
+        }
+
+
+
+
+        
+
+    </style>
+
+
+ <div id="sidebar" class="main-content d-flex">
+    <!-- Sidebar navigation -->
+    <div class="d-flex flex-column flex-shrink-0 p-3 text-white" style="width: 280px; height:100vh; background-color: #023047">
+      <a href="/" class="d-flex align-items-center justify-content-center mb-2 mb-lg-0 text-white text-decoration-none">
+          <img src="{{ asset('logo2.png') }}" width=140 height=30 alt="XLearn">
+
+        </a>
+  
+    <hr>
+    
+    <div class="nav-item d-flex flex-column align-self-center" style="width:80%">
+          
+          <div class="photo-edit"><div class="img-container">
+          {% if user.image is not null %}
+
+          <img
+              class="img-responsive"
+              src="{{asset('profile/')}}{{ user.image}}"
+              alt=""
+              srcset=""
+            />
+
+
+            {% else %}
+
+            <img
+              class="img-responsive"
+              src="https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg"
+              alt=""
+              src
+              set=""
+            />
+          {% endif %}
+            </div>
+
+              <!-- Button trigger modal -->
+        
+
+              <!-- Button trigger modal -->
+              <label type="button" class="" style="text-shadow: 0 0 10px rgba(0,0,0,1);border-radius:50%;position:relative; top:-2.8rem; right:50%; left:45%" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <span class="material-symbols-outlined" style="scale: 1.3">edit</span>
+              </label>
+              
+              </div>
+
+              <!-- Modal -->
+              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModalLabel" style="color:black">Photo de profil</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                     {{ form_start(form2) }}
+
+                     {{ form_widget(form2.image) }}
+
+
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+
+                      
+                           <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+
+            
+{{ form_end(form2) }}
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+            
+
+            </div>
+
+          <h3 style="text-align:center"><strong>{{app.user.name}} {{app.user.lastName}}</strong></h3>
+
+            <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+      
+      <li class="nav-item">
+        <a href="#" class="nav-link text-white active" data-content="profile">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
+          Profil
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link text-white" data-content="courses">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
+          Mes formations
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link text-white" data-content="favourites">
+          <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
+          Favoris
+        </a>
+      </li>
+     
+    </ul>
+
+
+
+
+  </div>
+
+    <!-- Content area -->
+    <div id="content" class="d-flex bg-body-tertiary">
+      
+      <!-- About content -->
+      <div id="profile">
+
+        <h2>Profil</h2>
+{# 
+            {% set controllerOutput = render(controller('App\\Controller\\ProfileController::editUser')) %}
+           
+            {{ controllerOutput|raw }} #}
+
+             {% include 'profile/edit.html.twig' with {'form': form} %}
+
+
+      </div>
+
+      
+      <!-- Contact content -->
+      <div id="courses">
+      {% if is_granted("ROLE_LEARNER") %}
+      
+          {% include 'profile/learnerFormations.html.twig' %}
+
+      {% endif %}
+
+      {% if is_granted("ROLE_INSTRUCTOR") %}
+
+        {% for learner in learners %}
+        
+          
+        {% endfor %}
+      
+          {% include 'profile/instructorFormations.html.twig' %}
+
+          
+
+      {% endif %}
+
+    </div>
+
+</div>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+
+    <!-- Custom JavaScript -->
+    <script>
+
+    
+     // Listen for clicks on the sidebar navigation links
+        const navLinks = document.querySelectorAll('.nav .nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', event => {
+                event.preventDefault();
+                // Remove the "active" class from all links
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                });
+                // Add the "active" class to the clicked link
+                link.classList.add('active');
+                // Get the content ID from the data-content attribute
+                const contentId = link.dataset.content;
+                // Get the content element by ID
+                const content = document.getElementById(contentId);
+                // Hide all content elements
+                const allContent = document.querySelectorAll('#content > *');
+                allContent.forEach(element => {
+                    element.style.display = 'none';
+                });
+                // Show the selected content element
+                content.style.display = 'block';
+            });
+        });
+    </script>
+
+{% endblock %}

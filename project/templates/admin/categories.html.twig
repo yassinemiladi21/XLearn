@@ -1,0 +1,130 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Catégories{% endblock %}
+
+{% block body %}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+{% include "admin/navbar.html.twig" %}
+
+<div style="padding: 3rem">
+
+    <h1 style="margin-bottom:2rem; color: #023047; font-weight: bold;  font-size:3rem;">Gestion Catégories</h1>
+
+
+<div class="row mb-4">
+
+<div class="form-group col-md-3">
+    <input type="text" id="searchInput" class="form-control" placeholder="Recherche...">
+</div>
+
+<div class="col-md-3 ml-3">
+    <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Ajouter catégorie</a>
+</div>
+
+</div>
+
+
+    <table class="table pt-2" id="dataTable">
+            <tr style="background-color: #023047; color:white">
+                <th>Id</th>
+                <th>Nom catégorie</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for category in categories %}
+
+        
+
+                  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+
+                            <h1 class="modal-title fs-5" id="exampleModalLabel" style="color:black">Ajouter catégorie</h1>
+                    
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ path('app_admin_categories_new') }}" method="POST">
+                            
+                            <div class="form-group mb-2">
+                                <label for="exampleFormControlInput1">Nom catégorie</label>
+                                <input name="name" type="text" class="form-control" id="exampleFormControlInput1" placeholder="" required>
+                            </div>
+                            <div class="form-group mb-4">
+                                <label for="exampleFormControlInput2">Description</label>
+                                <textarea name="description" type="text" class="form-control" id="exampleFormControlInput2" placeholder="" required>
+                                </textarea>
+                            </div>
+
+                                <button type="submit" class="btn btn-success">Confirmer</button>
+                          </form>
+
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                        {# <a href="{{ path('app_admin_users_activate', {'id': category.id}) }}" class="btn btn-success">Confirmer</a> #}
+
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+        
+            <tr>
+                <td>{{ category.id }}</td>
+                <td>{{ category.name }}</td>
+                <td>{{ category.description }}</td>
+        
+            </tr>              
+
+        {% else %}
+            <tr>
+                <td colspan="11">pas de catégories disponibles</td>
+            </tr>
+    {% endfor %}
+        </tbody>
+    </table>
+
+
+    </div>
+
+
+<script>
+
+// Get the search input element and table
+var searchInput = document.getElementById('searchInput');
+var dataTable = document.getElementById('dataTable');
+
+// Add event listener to the search input
+searchInput.addEventListener('keyup', function() {
+  var filter = searchInput.value.toLowerCase();
+  var rows = dataTable.getElementsByTagName('tr');
+
+  // Loop through all table rows, hide non-matching rows
+  for (var i = 1; i < rows.length; i++) {
+    var cells = rows[i].getElementsByTagName('td');
+    var visible = false;
+
+    // Loop through all cells in a row, check if any match the filter
+    for (var j = 0; j < cells.length; j++) {
+      var cellData = cells[j].innerText.toLowerCase();
+      if (cellData.indexOf(filter) > -1) {
+        visible = true;
+        break;
+      }
+    }
+
+    // Show/hide row based on visibility flag
+    rows[i].style.display = visible ? '' : 'none';
+  }
+});
+
+
+
+</script>
+
+{% endblock %}

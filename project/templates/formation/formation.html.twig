@@ -1,0 +1,146 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formation{% endblock %}
+
+{% block body %}
+
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+
+
+<style>
+ .course-header {
+        padding:0;
+        max-width: inherit;
+        height: 32rem;
+        overflow: hidden;
+        display: flex;
+        border-top-left-radius: 0.85rem;
+          border-top-right-radius: 0.85rem;
+          background-color: white;
+
+  }
+
+  .course-header img {
+          max-width: inherit;
+          max-height: inherit;
+          height: inherit;
+          width: inherit;
+          object-fit: cover;
+          
+
+  }
+</style>
+   
+ <div class="container bg-body-tertiary" style="width:85%">
+      
+       
+
+<div class="row mt-5">
+  
+  <div class="col-8">
+  
+
+              <div class="course-header d-flex flex-column">
+        <img style=""
+              src="{{asset('formation/')}}{{ formation.thumbnail}}"
+              alt="Course Thumbnail"
+            />
+
+         {% if is_granted("IS_AUTHENTICATED") %}
+            
+          {% if is_granted('ROLE_LEARNER') %}
+          {% if inscription is empty %}
+        
+            <a href="{{ path('app_inscription_new', {'id': formation.id}) }}" class="btn btn-success">Demander inscription</a>
+          
+          {% endif %}
+          {% endif %}
+
+        {% else %}
+            <a href="{{ path('app_login') }}" class="btn btn-success">Demander inscription</a>
+                
+        {% endif %} 
+
+          </div>
+      
+
+  </div>
+
+  <div class="col-4 overflow-scroll">
+
+
+    <div class="list-group" id="list-tab" role="tablist">
+          <span class="badge bg-warning mb-2" style="font-size:1rem">Section 1</span>
+
+          <div class="d-flex align-items-center mb-2" style="margin-left:1.5rem"><span class="material-symbols-outlined me-2">smart_display</span> Video 1</div>
+          {% if formation.documents is not empty %}
+                  {% if formation.documents[0] is not null %}
+
+            <div class="d-flex align-items-center mb-2" style="margin-left:1.5rem"><span class="material-symbols-outlined me-2">description</span>Document 1</div>
+          {% endif %}
+                    {% endif %}
+
+          
+
+
+     {% for key,value in formation.videos [1:] %} 
+
+
+      <span class="badge bg-warning mb-2" style="font-size:1rem">Section {{key + 2}}</span>
+                <div class="d-flex align-items-center mb-2" style="margin-left:1.5rem"><span class="material-symbols-outlined me-2">smart_display</span> Video {{key + 2}}</div>
+
+        {% if formation.documents is not empty %}
+            {% if formation.documents[key + 1] is not null %}
+        
+             <div class="d-flex align-items-center mb-2" style="margin-left:1.5rem"><span class="material-symbols-outlined me-2">description</span>Document {{ key + 2}}</div>
+            {% endif %}
+          {% endif %}
+
+        {% endfor %}
+
+
+
+  </div>
+
+  </div>
+
+</div>
+</div>
+
+
+<div class="container bg-body-tertiary">
+        <div class="row">
+        
+
+        <nav class="mt-3">
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Description</button>
+        </div>
+        </nav>
+        
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active p-4 d-flex flex-column" style="gap:0.5rem;" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                
+                <div><h5 style="color: #ffb703;"><strong>Description</strong></h5></div>
+                <div>{{formation.description}}</div>
+                <hr>
+                <div>{% if formation.instructor.image is not null %}
+                        <img  src="{{asset('profile/')}}{{ formation.instructor.image}}" alt="" class="rounded-circle me-2" width="40" height="40">
+
+                    {% else %}
+                                <img  src="https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg" alt="" class="rounded-circle me-2" width="40" height="40">
+
+                    {% endif %}{{formation.instructor.getFullName |capitalize}} </div> <br>
+                <div style="width:8rem"><span class="p-2 badge bg-warning text-dark d-flex align-items-center">
+              <span class="material-symbols-outlined">signal_cellular_alt</span>{{formation.level}}
+            </span></div><br>
+                
+
+                </div>
+            </div>
+      </div>
+        
+
+    </div>
+
+{% endblock %}

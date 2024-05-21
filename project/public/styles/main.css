@@ -1,0 +1,108 @@
+.slideshow {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+.main {
+  width: 100vw;
+  height: 100vw;
+  z-index: 2;
+}
+
+.main .course {
+  border: none;
+  padding: 2rem;
+  min-height: 30rem;
+  background: transparent;
+  text-align: center;
+  font-family: "Poppins";
+}
+/* .courses .course:hover {
+box-shadow: 2px 2px 15px #2b4068 inset;
+} */
+.main .course-body {
+  display: flex;
+}
+.course-header {
+  padding-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.main .instructorImg {
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+}
+
+.course-foter {
+  display: flex;
+  gap: 2rem;
+}
+
+.course-foter div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.course-body {
+  display: flex;
+  gap: 2rem;
+}
+.course-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.buttons {
+  align-self: flex-start;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  color: black;
+}
+
+.card-footer .instructorImg {
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+}
+
+.card-footer {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.card-footer p {
+  margin: 0;
+}
+
+.card-img-overlay {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+}
+
+.image-container {
+  position: relative;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.3);
+}

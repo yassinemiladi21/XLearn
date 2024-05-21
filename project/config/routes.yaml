@@ -1,0 +1,14 @@
+# index:
+#   path: /{age<\d+>?}
+#   controller: App\Controller\TestController::index
+#   host: localhost
+#   schemes: [http, https]
+#   methods: [GET]
+#   # defaults:
+#   #   age: 0
+#   # requirements:
+#   #   age: \d+
+
+app_logout:
+  path: /logout
+  methods: GET

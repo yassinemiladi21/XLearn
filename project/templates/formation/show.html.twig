@@ -1,0 +1,187 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formation{% endblock %}
+
+{% block body %}
+
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+<style>
+    .tab-content {
+        min-height: 20rem;
+    }
+
+    .course-header {
+        padding:0;
+        max-width: 100%;
+        height: 100%;
+        overflow: hidden;
+        display: flex;
+        background-color: white;
+
+  }
+
+  .course-header img {
+          max-width: inherit;
+          max-height: inherit;
+          height: inherit;
+          width: inherit;
+          object-fit: cover;
+          
+
+  }
+</style>
+
+
+
+{% for type, messages in flash %}
+    {% for message in messages %}
+        <div class="alert alert-{{ type }} alert-dismissible fade show" style="position:fixed; width:100%" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+{% endfor %}
+
+<script>
+    setTimeout(function() {
+        let alerts = document.querySelectorAll('.alert');
+        alerts.forEach(function(alert) {
+            alert.remove();
+        });
+    }, 5000);
+</script>
+
+
+
+{% if is_granted("ROLE_ADMIN") or (is_granted("ROLE_INSTRUCTOR") and appartient) %}
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+
+    {% include "formation/formationHeader.html.twig" %}
+    {% include "formation/formationValidated.html.twig" %}
+
+{% elseif is_granted("ROLE_LEARNER") %}
+
+    {% if inscription is not null %}
+        {% for insc in inscription %}
+
+            {% if insc.validated %}
+                  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+
+                {% include "formation/formationHeader.html.twig" %}
+                {% include "formation/formationValidated.html.twig" %}
+            {% else %}
+              {% include "main/navbar.html.twig" %}
+                {% include "formation/formation.html.twig" %}
+            {% endif %}
+            
+          
+        {% endfor %}
+    {% endif %}
+
+    {% if inscription is empty %}
+      
+        {% include "main/navbar.html.twig" %}
+        {% include "formation/formation.html.twig" %}
+    {% endif %}
+    
+{% else %}
+    {% include "main/navbar.html.twig" %}
+    {% include "formation/formation.html.twig" %}
+
+{% endif %}
+
+
+
+    
+
+
+
+
+
+
+
+    {# <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ formation.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ formation.title }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ formation.description }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ formation.date ? formation.date|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+           
+            <tr>
+                <th>Level</th>
+                <td>{{ formation.level }}</td>
+            </tr>
+            <tr>
+                <th>Hours</th>
+                <td>{{ formation.hours }}</td>
+            </tr>
+            
+            <tr>
+                <th>Rate</th>
+                <td>{{ formation.rate }}</td>
+            </tr>
+            <tr>
+                <th>Popular</th>
+                <td>{{ formation.popular ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_formation_index') }}">back to list</a>
+
+    <a href="{{ path('app_formation_edit', {'id': formation.id}) }}">edit</a>
+
+    {{ include('formation/_delete_form.html.twig') }} #}
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+<script>
+    
+
+
+
+
+        // var maxPercentage = 0;
+        // const percentages = [];
+        //  videoElement[0].addEventListener('timeupdate', function() {
+        //  const percentage = Math.floor((videoElement[0].currentTime / videoElement[0].duration) * 100);
+        //  percentages.push(percentage);
+        //  percentages.forEach(function(perc) {
+        //     if (perc > maxPercentage) {
+        //         maxPercentage = perc;
+        //         videoPercentage[0].value = maxPercentage;
+
+        //     } else {
+        //         console.log('Last maximum percentage value:', maxPercentage);
+        //     }
+        // });
+        
+        //  });
+
+        // function updateProgress(percentage) {
+        // const xhr = new XMLHttpRequest();
+        // xhr.open('POST', '/update-video-progress', true);
+        // xhr.setRequestHeader('Content-Type', 'application/json');
+        // xhr.send(JSON.stringify({ percentage: percentage }));
+        // }
+
+</script>
+
+
+{% endblock %}

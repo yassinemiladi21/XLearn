@@ -1,0 +1,262 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formations{% endblock %}
+
+{% block body %}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+.course-header {
+        padding:0;
+        max-width: 4rem;
+        height: 2.5rem;
+        overflow: hidden;
+        display: flex;
+        border-radius: 0.85rem;
+        background-color: white;
+
+  }
+
+  .course-header img {
+          max-width: inherit;
+          max-height: inherit;
+          height: inherit;
+          width: inherit;
+          object-fit: cover;
+          
+
+  }
+
+</style>
+
+{% include "admin/navbar.html.twig" %}
+
+<div style="padding: 3rem">
+
+    <h1 style="margin-bottom:2rem; color: #023047; font-weight: bold;  font-size:3rem;">Gestion Formations</h1>
+
+
+<div class="row mb-4 align-items-end">
+
+<div class="form-group col-md-3">
+    <input type="text" id="searchInput" class="form-control" placeholder="Recherche...">
+</div>
+
+
+<div class="form-group col-md-2">
+  <label for="roleFilter">Instructeur</label>
+  <select id="roleFilter" class="form-control">
+    <option value="">Tous</option>
+    <option value="instructeur">Instructeur</option>
+    <option value="apprenant">Apprenant</option>
+  </select>
+
+</div>
+
+<div class="form-group col-md-2">
+  <label for="roleFilter">Etat</label>
+  <select id="roleFilter" class="form-control">
+    <option value="">Tous</option>
+    <option value="instructeur">Instructeur</option>
+    <option value="apprenant">Apprenant</option>
+  </select>
+
+</div>
+
+</div>
+
+
+    <table class="table pt-2" id="dataTable">
+            <tr style="background-color: #023047; color:white">
+                <th>Id</th>
+                <th></th>
+                <th>Titre</th>
+                <th>Description</th>
+                <th>Instructeur</th>
+                <th>Etat</th>                
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for formation in formations %}
+
+        {% if formation.instructor.id != 11 %}
+
+
+              {% if formation.validated == 0 %}
+              
+              <div class="modal fade" id="example{{formation.id}}Modal" tabindex="-1" aria-labelledby="example{{formation.id}}ModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="example{{formation.id}}ModalLabel" style="color:black">Valider formation</h1>
+                    
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Etes-vous sure de valider la formation <strong>
+                        {{formation.title}}</strong> ?</p>
+                    </div>
+                    <div class="modal-footer">
+
+                    
+                        <a class="btn btn-success" href="{{ path('app_admin_formations_validate', {'id': formation.id}) }}">Confirmer</a>
+
+
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="modal fade" id="exampleModal{{formation.id}}" tabindex="-1" aria-labelledby="exampleModalLabel{{formation.id}}" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel{{formation.id}}" style="color:black">Refuser formation</h1>
+                    
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Etes-vous sure de refuser la formation <strong>
+                        {{formation.title}}</strong> ?</p>
+                    </div>
+                    <div class="modal-footer">
+
+                    
+                        <a class="btn btn-success" href="{{ path('app_admin_formations_refuse', {'id': formation.id}) }}">Confirmer</a>
+
+
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+        {% endif %}
+            <tr>
+                <td>{{ formation.id }}</td>
+
+                <td><div class="course-header">
+              <img style=""
+              src="{{asset('formation/')}}{{ formation.thumbnail}}"
+              alt="Course Thumbnail"
+            />
+
+            {# <img
+              class="instructorImg img-responsive"
+              src="https://avatars.githubusercontent.com/u/51037193?v=4"
+              alt=""
+              srcset=""
+            /> #}
+          </div>
+                </td>
+
+                
+                <td>{{ formation.title }}</td>
+                <td>{{ formation.description }}</td>
+                <td>{% if formation.instructor.image is not null %}
+                        <img  src="{{asset('profile/')}}{{ formation.instructor.image}}" alt="" class="rounded-circle me-2" width="32" height="32">
+
+                    {% else %}
+                                <img  src="https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg" alt="" class="rounded-circle me-2" width="32" height="32">
+
+                    {% endif %}
+                {{ formation.instructor.getFullName }}</td>
+                <td> {% if formation.validated == 0 %}
+                    <span class='badge bg-secondary rounded-pill'>En attente</span>
+                {% elseif formation.validated == 1 %}
+                    <span class='badge bg-success rounded-pill'>Validée</span>
+                {% else %}
+                    <span class='badge bg-danger rounded-pill'>Refusée</span>
+                {% endif %}</td>
+                <td>
+                {% if formation.validated == 0 %}
+                   <a class="btn btn-success btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#example{{formation.id}}Modal">Valider</a>
+                   <a class="btn btn-danger btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#exampleModal{{formation.id}}">Refuser</a>
+                {% endif %}
+
+                </td>
+               
+                <td><a class="btn btn-info btn-sm rounded-pill" href="{{ path('app_formation_show', {'id': formation.id}) }}">Consulter</a></td>
+
+
+                
+
+
+            </tr>
+        {% endif %}
+            
+
+              
+
+        {% else %}
+            <tr>
+                <td colspan="11">pas de formations</td>
+            </tr>
+    {% endfor %}
+        </tbody>
+    </table>
+
+
+    </div>
+
+
+<script>
+
+
+
+// Get the filter elements and table
+var searchInput = document.getElementById('searchInput');
+var roleFilter = document.getElementById('roleFilter');
+var dataTable = document.getElementById('dataTable');
+
+
+
+// Add event listeners to the filter elements
+searchInput.addEventListener('keyup', applyFilters);
+roleFilter.addEventListener('change', applyFilters);
+
+// Function to apply all filters
+function applyFilters() {
+  var searchFilter = searchInput.value.toLowerCase();
+  var role = roleFilter.value;
+  var rows = dataTable.getElementsByTagName('tr');
+
+  // Loop through all table rows, hide non-matching rows
+  for (var i = 1; i < rows.length; i++) {
+    var cells = rows[i].getElementsByTagName('td');
+    var visible = true;
+
+    // Apply search filter
+    if (searchFilter !== '') {
+      var matchesSearch = false;
+      for (var j = 0; j < cells.length; j++) {
+        var cellData = cells[j].innerText.toLowerCase();
+        if (cellData.indexOf(searchFilter) > -1) {
+          matchesSearch = true;
+          break;
+        }
+      }
+      visible = visible && matchesSearch;
+    }
+
+    // Apply role filter
+    if (role !== '') {
+      var roleCell = cells[7].innerText.toLowerCase().trim(); // Assuming role is in the second column
+
+
+      visible = visible && (roleCell === role);
+    }
+
+    // Show/hide row based on visibility flag
+    rows[i].style.display = visible ? '' : 'none';
+  }
+}
+
+
+</script>
+
+{% endblock %}

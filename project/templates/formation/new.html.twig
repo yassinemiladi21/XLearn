@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Formation{% endblock %}
+
+{% block body %}
+
+    {{ include('main/navbar.html.twig') }}
+
+    <div style="padding:5rem">
+        <h1 style=" color: #023047; font-weight: bold; ">Créer Formation</h1>
+
+
+    {{ include('formation/_form.html.twig') }}
+
+        </div>
+
+
+{% endblock %}

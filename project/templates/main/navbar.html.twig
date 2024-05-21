@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+
+<style>
+ .profileImg {
+  width: 45px;
+  height: 45px;
+
+}
+</style>
+<header class="p-3 text-white" style="background-color: #023047">
+    <div class="container">
+      <div class="d-flex flex-wrap align-items-center justify-content-between">
+        <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+          <img src="{{ asset('logo2.png') }}" width=140 height=30 alt="XLearn">
+
+        </a>
+
+        <ul class="nav col-12 col-lg-auto me-lg-0 mb-2 justify-content-center mb-md-0">
+          <li><a href="/" class="nav-link px-2 text-secondary">Accueil</a></li>
+          <li><a href="{{path('app_formation_index')}}" class="nav-link px-2 text-white">Formations</a></li>
+          <li><a href="#temoignages" class="nav-link px-2 text-white">Témoignages</a></li>
+          <li><a href="#faq" class="nav-link px-2 text-white">FAQ</a></li>
+          <li><a href="#footer" class="nav-link px-2 text-white">Contact</a></li>
+        </ul>
+
+      <div class="d-flex align-items-center">
+        <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+          <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
+        </form>
+
+        {% if is_granted("ROLE_USER") %}
+           
+
+        <div class="dropdown">
+      <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+
+      {% if app.user.image is not null %}
+        <img  src="{{asset('profile/')}}{{ app.user.image}}" alt="" class="rounded-circle me-2" width="32" height="32">
+
+      {% else %}
+                <img  src="https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg" alt="" class="rounded-circle me-2" width="32" height="32">
+
+        {% endif %}
+        <strong>{{ app.user.name  }}</strong>
+      </a>
+      <ul class="dropdown-menu text-small shadow" style="background-color: #f5f5f5;" aria-labelledby="dropdownUser1">
+        <li><a class="dropdown-item" href="{{ path('app_profile') }}">Profil</a></li>
+        {% if is_granted("ROLE_INSTRUCTOR") %}<li><a class="dropdown-item" href="{{ path('app_formation_new') }}">Créer formation</a></li>{% endif %}
+
+        {% if is_granted("ROLE_ADMIN") %}<li><a class="dropdown-item" href="{{ path('app_admin_users') }}">Dashboard</a></li>{% endif %}
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a></li>
+      </ul>
+    </div>
+
+     
+
+        {% else %}
+        
+        <div class="text-end">
+          <button type="button" class="btn btn-outline-light me-2" onclick="window.location.href='{{ path('app_login') }}'">Se connecter</button>
+          <button type="button" class="btn btn-warning" style="background-color: #ffb703" onclick="window.location.href='{{ path('app_register') }}'">S'inscrire</button>
+        </div>
+
+        {% endif %}
+        </div>
+      </div>
+    </div>
+  </header>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+
+
+
+{% endblock %}

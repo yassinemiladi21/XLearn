@@ -1,0 +1,43 @@
+.testi {
+  width: 60%;
+}
+
+.testi .course-body {
+  display: flex;
+}
+
+.testi .instructorImg {
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+}
+
+.buttons {
+  align-self: flex-start;
+}
+
+.slick-prev::before,
+.slick-next::before {
+  color: black;
+}
+
+.testi .card-footer .instructorImg {
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+}
+
+.testi .card-footer {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.testi .card-footer p {
+  margin: 0;
+}
+
+.testi .card {
+  min-width: 30rem;
+  margin: 7rem;
+}

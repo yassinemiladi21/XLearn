@@ -1,0 +1,390 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Formation{% endblock %}
+
+{% block body %}
+
+
+<style>
+
+    .comment-box {
+        position: relative;
+        -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+        -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+      }
+
+      .comment-box:before,
+      .comment-box:after {
+        content: "";
+        height: 0;
+        width: 0;
+        position: absolute;
+        display: block;
+        border-width: 10px 12px 10px 0;
+        border-style: solid;
+        border-color: transparent #fcfcfc;
+        top: 8px;
+        left: -11px;
+      }
+
+      .comment-box:before {
+        border-width: 11px 13px 11px 0;
+        border-color: transparent rgba(0, 0, 0, 0.05);
+        left: -12px;
+      }
+
+      .comment-box {
+        width: 610px;
+      }
+
+.comment-box .comment-head {
+        background: #fcfcfc;
+        padding: 10px 12px;
+        border-bottom: 1px solid #e5e5e5;
+        overflow: hidden;
+        -webkit-border-radius: 4px 4px 0 0;
+        -moz-border-radius: 4px 4px 0 0;
+        border-radius: 4px 4px 0 0;
+      }
+
+      .comment-box .comment-head i {
+        float: right;
+        margin-left: 14px;
+        position: relative;
+        top: 2px;
+        color: #a6a6a6;
+        cursor: pointer;
+        -webkit-transition: color 0.3s ease;
+        -o-transition: color 0.3s ease;
+        transition: color 0.3s ease;
+      }
+
+      .comment-box .comment-head i:hover {
+        color: #03658c;
+      }
+
+      .comment-box .comment-name {
+        color: #283035;
+        font-size: 14px;
+        font-weight: 700;
+        float: left;
+        margin-right: 10px;
+      }
+
+      .comment-box .comment-name a {
+        color: #283035;
+      }
+
+      .comment-box .comment-head span {
+        float: left;
+        color: #999;
+        font-size: 13px;
+        position: relative;
+        top: 1px;
+      }
+
+      .comment-box .comment-content {
+        background: #fff;
+        padding: 12px;
+        font-size: 15px;
+        color: #595959;
+        -webkit-border-radius: 0 0 4px 4px;
+        -moz-border-radius: 0 0 4px 4px;
+        border-radius: 0 0 4px 4px;
+      }
+
+      .comment-box .comment-name.by-author,
+      .comment-box .comment-name.by-author a {
+        color: #03658c;
+      }
+      .comment-box .comment-name.by-author:after {
+        content: "autor";
+        background: #03658c;
+        color: #fff;
+        font-size: 12px;
+        padding: 3px 5px;
+        font-weight: 700;
+        margin-left: 10px;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+      }
+
+</style>
+
+
+     <div class="container bg-body-tertiary" style="width:85%">
+
+<div class="row mt-5">
+  
+  <div class="col-8">
+  
+    <div class="tab-content" id="nav-tabContent">
+
+        <div class="tab-pane fade show active" id="list-1" role="tabpanel" aria-labelledby="list-1-list">
+        <input type="text" name="perc" id="perc" value="0"> 
+            <video controls>
+              <source src="{{asset('formation/')}}{{formation.videos[0]}}" type="video/mp4">
+              {# <source src="mov_bbb.ogg" type="video/ogg"> #}
+              Your browser does not support HTML video.
+            </video>
+        </div>
+
+            {% for key,value in formation.videos [1:] %} 
+        <div class="tab-pane fade" id="list-{{key + 2}}" role="tabpanel" aria-labelledby="list-{{key + 2}}-list">
+            <video controls>
+              <source src="{{asset('formation/')}}{{value}}" type="video/mp4">
+              {# <source src="mov_bbb.ogg" type="video/ogg"> #}
+              Your browser does not support HTML video.
+            </video>
+        </div>
+          
+            {% endfor %}
+      
+    </div>
+  </div>
+
+  <div class="col-4 overflow-scroll">
+
+
+
+    <div class="list-group" id="list-tab" role="tablist">
+          <span class="badge bg-warning mb-2" style="font-size:1rem">Section 1</span>
+
+          <div class="d-flex align-items-center mb-2"><a class="list-group-item list-group-item-action active d-flex align-items-center" id="list-1-list" data-bs-toggle="list" href="#list-1" role="tab" aria-controls="list-1"><span class="material-symbols-outlined me-2">smart_display</span> Video 1</a></div>
+
+          
+          {% if formation.documents is not empty %}
+                  {% if formation.documents[0] is not null %}
+            <p class="list-group-item d-flex align-items-center"><span class="material-symbols-outlined me-2">description</span> Document 1 <a class="material-symbols-outlined ms-auto"  href="/formation/{{formation.documents[0]}}">download</a></p>
+
+          {% endif %}
+                    {% endif %}
+
+          
+
+
+     {% for key,value in formation.videos [1:] %} 
+
+
+       <span class="badge bg-warning mb-2" style="font-size:1rem">Section {{key + 2}}</span>
+
+          <div class="d-flex align-items-center mb-2"><a class="list-group-item list-group-item-action d-flex align-items-center" id="list-{{key + 2}}-list" data-bs-toggle="list" href="#list-{{key + 2}}" role="tab" aria-controls="list-{{key + 2}}"><span class="material-symbols-outlined me-2">smart_display</span> Video {{key + 2}}</a></div>
+      
+        {% if formation.documents is not empty %}
+        {% if formation.documents[key + 1] is not null %}
+        
+            <p class="list-group-item d-flex align-items-center"><span class="material-symbols-outlined me-2">description</span> Document {{ key + 2}} <a class="material-symbols-outlined ms-auto"  href="/formation/{{formation.documents[key + 1]}}">download</a></p>
+            {% endif %}
+          {% endif %}
+
+        {% endfor %}
+
+
+
+  </div>
+
+  </div>
+
+</div>
+</div>
+
+
+<div class="container bg-body-tertiary">
+        <div class="row">
+        
+
+        <nav class="mt-3">
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Description</button>
+            {% if formation.validated == 1 %}
+            <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Commentaires</button>
+          {% endif %}
+        </div>
+        </nav>
+        
+            <div class="tab-content" style="" id="nav-tabContent">
+                <div class="tab-pane fade show active p-4" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                  
+                <div><h5 style="color: #ffb703;"><strong>Description</strong></h5></div>
+                <div>{{formation.description}}</div>
+                <hr>
+                <div>{% if formation.instructor.image is not null %}
+                        <img  src="{{asset('profile/')}}{{ formation.instructor.image}}" alt="" class="rounded-circle me-2" width="40" height="40">
+
+                    {% else %}
+                                <img  src="https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg" alt="" class="rounded-circle me-2" width="40" height="40">
+
+                    {% endif %}{{formation.instructor.getFullName |capitalize}} </div> <br>
+                <div style="width:8rem"><span class="p-2 badge bg-warning text-dark d-flex align-items-center">
+              <span class="material-symbols-outlined">signal_cellular_alt</span>{{formation.level}}
+            </span></div><br>
+
+                </div>
+
+            
+
+
+                <div class="tab-pane fade p-4" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+
+                <h2>Commentaires ..</h2><br>
+
+                <div class="d-flex flex-column">
+                <div class="d-flex">
+
+                    {% if app.user.image is not null %}
+                        <img  src="{{asset('profile/')}}{{ app.user.image}}" alt="" class="rounded-circle me-2" width="50" height="50">
+
+                    {% else %}
+                                <img  src="https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg" alt="" class="rounded-circle me-2" width="50" height="50">
+
+                    {% endif %}
+
+                    
+
+
+                  <form action="{{ path('app_commentaire_new', {'id': formation.id}) }}" method="POST" class="col-md-5">
+
+
+                            <div class="form-group mb-3">
+                                <textarea id="comment" name="content" required="required" class="form-control" placeholder="Ecrire un commentaire.."></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-success">Publier</button>
+                  </form>
+
+                
+                </div>
+
+                {% for comment in comments %}
+                  
+                        {% set currentDate = now %}
+                        {% set anotherDate = comment.createdAt %} {# Replace '2023-05-31' with your desired date #}
+
+                        {% set duration = currentDate.diff(anotherDate) %}
+
+                        {% set years = duration.y %}
+                        {% set months = duration.m %}
+                        {% set days = duration.d %}
+                        {% set hours = duration.h %}
+                        {% set minutes = duration.i %}
+                        {% set seconds = duration.s %}
+
+                        {% set durationString = '' %}
+
+                        {% set durationString = '' %}
+
+                        {% if years > 0 %}
+                            {% set durationString = years ~ ' ans' %}
+                        {% elseif months > 0 %}
+                            {% set durationString = months ~ ' mois' %}
+                        {% elseif days > 0 %}
+                            {% set durationString = days ~ ' jours' %}
+                        {% elseif hours > 0 %}
+                            {% set durationString = hours ~ ' heures' %}
+                        {% elseif minutes > 0 %}
+                            {% set durationString = minutes ~ ' minutes' %}
+                        {% elseif seconds > 0 %}
+                            {% set durationString = seconds ~ ' secondes' %}
+                        {% endif %}
+
+            
+
+
+                <div class="d-flex mt-4">
+
+                {% if comment.commentor.image is not null %}
+                        <img  src="{{asset('profile/')}}{{ comment.commentor.image}}" alt="" class="rounded-circle me-2" width="50" height="50">
+
+                    {% else %}
+                                <img  src="https://t3.ftcdn.net/jpg/00/64/67/80/360_F_64678017_zUpiZFjj04cnLri7oADnyMH0XBYyQghG.jpg" alt="" class="rounded-circle me-2" width="50" height="50">
+
+                    {% endif %}
+                    
+                    
+                <div class="comment-box" style="margin-left:1rem">
+                  <div class="comment-head">
+                    <h6 class="comment-name">
+                    {% if app.user == comment.commentor %}
+                      
+                          <div class="badge bg-secondary">Moi</div>
+
+                      {% elseif formation.instructor == comment.commentor %}
+                      <div class="d-flex ">
+                       <div>{{comment.commentor.fullName}}  </div>
+                          <div class="badge bg-secondary">Auteur</div></div>
+                      {% else %}
+                          {{comment.commentor.fullName}}
+
+                      {% endif %}
+                      
+                      
+                    </h6>
+
+                    <span>Il y a {{ durationString|trim(', ') }}</span>
+                    <i class="fa fa-reply"></i>
+                    <i class="fa fa-heart"></i>
+                  </div>
+
+                  <div class="comment-content">
+                    {{comment.content}}
+                  </div>
+                </div>
+
+                </div>
+                {% endfor %}
+
+
+              </div>
+            </div>
+
+
+            </div>
+      </div>
+        
+
+    </div>
+
+    {% if is_granted("ROLE_LEARNER") %}
+    <script>
+    
+        const videoElement = document.querySelector('video');
+        let maxPercentage = 0;
+
+        videoElement.addEventListener('timeupdate', function() {
+          const currentPercentage = (videoElement.currentTime / videoElement.duration) * 100;
+
+          if (currentPercentage > maxPercentage && videoElement.currentTime < videoElement.duration) {
+            maxPercentage = currentPercentage;
+          } else {
+            console.log('Last maximum percentage value:', maxPercentage);
+          }
+
+          const label = document.querySelector("#perc");
+          label.value = maxPercentage;
+
+          const list = document.querySelector("#list-1-list");
+
+          // Create a new span element
+          var spanElement = document.createElement("span");
+
+          // Set the class attribute of the span element
+          spanElement.className = "material-symbols-outlined";
+
+          // Set the text content of the span element
+          spanElement.textContent = "check_circle";
+
+
+
+          if (maxPercentage >= 50) {
+            list.appendChild(spanElement);
+          }
+
+        });
+
+    
+    </script>
+    {% endif %}
+    
+{% endblock %}
